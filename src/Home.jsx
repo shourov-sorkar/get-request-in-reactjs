@@ -4,18 +4,20 @@ export default class Home extends React.Component {
     state = {
       information: []
     }
-    componentDidMount() {
+    componentDidMount(){
       axios.get(`https://jsonplaceholder.typicode.com/posts`)
-        .then(res => {
-          const information = res.data;
+       // GET request using axios inside componentDidMount React hook
+        .then(response => {
+          const information = response.data;
           this.setState({ information });
         })
     }
     render() {
       return (
+
         <ol>
           { this.state.information.map(info => <li> Title: {info.title} <br/> body: {info.body}</li>)}
-          </ol>
+        </ol>
       )
     }
   }
