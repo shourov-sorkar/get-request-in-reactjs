@@ -3,7 +3,9 @@ import axios from "axios";
 import Spinner from 'react-bootstrap/Spinner';
 export default class Home extends React.Component {
   state = {
-    information: []
+    information: [],
+    err: []
+
   }
   componentDidMount() {
     axios.get(`https://jsonplaceholder.typicode.com/posts`)
@@ -11,6 +13,9 @@ export default class Home extends React.Component {
       .then(res => {
         const information = res.data;
         this.setState({ information });
+      }
+      ).catch((err) => {
+        alert(err);
       })
   }
   render() {
