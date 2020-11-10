@@ -7,7 +7,7 @@ export default class Home extends React.Component {
     err: null,
   }
   componentDidMount() {
-    axios.get(`https://jsonplaceholder.typicode.com/post`)
+    axios.get(`https://jsonplaceholder.typicode.com/posts`)
       // GET request using axios inside componentDidMount React hook
       .then(res => {
         if (res.status === 200) this.setState({ information: res.data });
