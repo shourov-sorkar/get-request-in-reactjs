@@ -4,35 +4,34 @@ import Spinner from 'react-bootstrap/Spinner';
 export default class Home extends React.Component {
   state = {
     information: [],
-    err: ""
-
+    err: null,
   }
   componentDidMount() {
-    axios.get(`https://jsonplaceholder.typicode.com/posts`)
+    axios.get(`https://jsonplaceholder.typicode.com/post`)
       // GET request using axios inside componentDidMount React hook
       .then(res => {
-        const information = res.data;
-        this.setState({ information });
+        if (res.status === 200) this.setState({ information: res.data });
+        else if (res.status === 505) this.setState({ err: 505 })
       }
       )
-      .catch(err => this.setState({ err: err.message }))
+      .catch(err => {
+        this.setState({ err: 404 })
+      })
   }
   render() {
-    // render element
-    let spinerRender = <Spinner animation="border" />;
-    let informationRender = this.state.information.length !== 0 && this.state.err.length === 0 && (
-      this.state.information.map(info => <ol><li> Title: {info.title} <br /> body: {info.body}</li></ol>)
-    )
-    let errorMessageRender = this.state.err.length !== 0 && (
-      <p>{this.state.err}</p>
-    )
     return (
-      <>
-        {
-          informationRender ? informationRender : errorMessageRender ? errorMessageRender : spinerRender
-        }
-      </>
-
+      this.state.err !== null ?
+        (<>
+          {this.state.err === 404 && <h1>Error 404 not found</h1>}
+          {this.state.err === 505 && <h1>Error 505 Internal server Error</h1>}
+        </>
+        ) :
+        this.state.information.length === 0 ? <Spinner animation="border" /> : this.state.information.map((info) => (
+          <>
+            <p>Title: {info.title}</p>
+            <p>Body: {info.body}</p>
+          </>
+        ))
     )
   }
 }
